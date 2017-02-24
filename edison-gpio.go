@@ -33,6 +33,20 @@ func ExportPin(pinvalue int) error {
 	return nil
 }
 
+//Give Pin Mode : 0,1,2
+func ModePin(pinMode string, pinValue int) error {
+	if pinMode != "1" && pinMode != "1" && pinMode != "0" {
+		return errors.New("Mode is not correct, only 0 1 2 authorized")
+	}
+	cmd := fmt.Sprintf("echo mode%v > /sys/kernel/debug/gpio_debug/gpio%v/current_pinmux", pinMode, pinValue)
+	//log.Println(cmd)
+	_, err := exec.Command("sh", "-c", cmd).Output()
+	if err != nil {
+		return (err)
+	}
+	return nil
+}
+
 //Give Pin direction : in , out, low, high
 func DirectionPin(pinDir string, pinValue int) error {
 	if pinDir != "low" && pinDir != "high" && pinDir != "in" && pinDir != "out" {
